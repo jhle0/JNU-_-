@@ -51,7 +51,17 @@ for mbti_type in mbti_types:
     playlists = get_playlists_for_mbti(mbti_type, token)
     mbti_playlists[mbti_type] = playlists
 
-with open("mbti_playlists.json", "w") as f:
-    json.dump(mbti_playlists, f, indent=4)
+json_data = json.dumps(mbti_playlists, indent=4)
 
-print(json.dumps(mbti_playlists, indent=4))
+def get_playlist_urls_for_mbti(mbti_type):
+    if mbti_type in mbti_playlists:
+        playlists = mbti_playlists[mbti_type]['playlists']['items']
+        urls = [playlist['external_urls']['spotify'] for playlist in playlists]
+        return urls
+    else:
+        return f"MBTI 유형 {mbti_type}에 대한 데이터가 없습니다."
+
+mbti_type = input("당신의 mbti를 입력하세요:")
+urls = get_playlist_urls_for_mbti(mbti_type)
+for url in urls:
+    print(url)
